@@ -14,7 +14,8 @@ require 'socket'
 
 
 #check invocation and proper usage
-
+#innovation for server mode
+#invocation for client mode
 #connect
 
 #send

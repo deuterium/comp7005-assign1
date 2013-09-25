@@ -4,12 +4,17 @@
 
 ##### CLIENT CODE
 default_port = 7005
-
+localhost = "127.0.0.1"
 
 
 require 'socket'
 
+s = TCPSocket.open(localhost, default_port)
 
+while line = s.gets
+puts line.chop
+end
+s.close
 
 
 

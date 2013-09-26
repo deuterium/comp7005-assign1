@@ -1,1 +1,1 @@
-Simple FTP programchriswood.ca@gmail.comWritten in RubyClient Server funtionality supporting 2 way transfer.Client has 5 commands that should be self descriptive:    list    get    put    help    exit
+Simple FTP programchriswood.ca@gmail.comWritten in RubyClient Server funtionality supporting 2 way transfer.Client has 5 commands that should be self descriptive:    list    get    put    help    exit

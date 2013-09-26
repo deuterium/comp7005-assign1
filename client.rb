@@ -5,22 +5,53 @@
 ##### CLIENT CODE
 default_port = 7005
 localhost = "127.0.0.1"
-p = "ftp>"
+@p = "ftp>"
 
 require 'socket'
+def sendfile(filename)
+    puts "sendfile called"
+end
+def getfile(filename)
+    puts "getfile called"
+end
+def listfiles
+    puts "listfiles called"
+end
+def help
+    puts "help called"
+end
+def disconnect(srv)
+    srv.puts "&disconnect%"
+    puts "#{@p} Disconnecting from server"
+end 
 
+
+#connect to to server
 s = TCPSocket.open(localhost, default_port)
+##needs error handling
 
-puts "//receiving from server"
-#while line = s.gets
-  line = s.gets
-  puts line.chop
-#end
+#server welcome message
+puts s.gets.chop
 
-
-puts "//sending to server"
-cmd = gets
-s.puts cmd
+#prompt for input from client
+while 1
+    cmd = gets.chomp.strip.downcase
+    case cmd
+    when "list"
+        listfiles
+    when "put"
+        sendfile "temp"
+    when "get"
+        getfile "temp"
+    when "help"
+        help
+    when "exit"
+        disconnect s
+        break
+    else 
+        puts "#{p} invalid command"
+    end 
+end
 
 s.close
 

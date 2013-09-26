@@ -6,18 +6,19 @@
 default_port = 7005
 
 p = "ftp>"
+t = " >> #{Time.now}"
 
 require 'socket'
 
 server = TCPServer.open(default_port)
 loop {
-  Thread.start(server.accept) do |client|
-    client.puts "#{p} Welcome! You've connected at #{Time.now}"
-    client.puts "#{p} Please type HELP for commands"
-    while msg = client.gets
-	puts msg.chop
-    end
-    client.close
+    Thread.start(server.accept) do |client|
+        client.puts "#{p} Welcome! You've connected at #{Time.now}"
+        client.puts "#{p} Please type HELP for commands"
+        while msg = client.gets.chomp
+            puts msg + t
+        end
+        client.close
     end
 }
 

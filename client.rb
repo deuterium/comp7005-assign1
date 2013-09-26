@@ -5,15 +5,23 @@
 ##### CLIENT CODE
 default_port = 7005
 localhost = "127.0.0.1"
-
+p = "ftp>"
 
 require 'socket'
 
 s = TCPSocket.open(localhost, default_port)
 
-while line = s.gets
-puts line.chop
-end
+puts "//receiving from server"
+#while line = s.gets
+  line = s.gets
+  puts line.chop
+#end
+
+
+puts "//sending to server"
+cmd = gets
+s.puts cmd
+
 s.close
 
 

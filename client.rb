@@ -13,8 +13,23 @@ def sendfile(filename)
     puts "sendfile called"
 end
 def getfile(filename)
+    listfiles
+    puts "#{@p} What file do you want?"
+    puts "requesting"
     @s.puts "CMD_GET"
-    puts "getfile called"
+    filename = gets
+    puts "sending filename"
+    @s.puts filename
+    puts "receiving file"
+    fc = @s.gets
+    puts "file received"
+    path = `pwd`
+    puts "opening file"
+    fd = File.open "#{path.chomp}/#{filename.chomp}","wb"
+    fd.print fc
+    fd.close
+    puts "closing file"
+    
 end
 def listfiles
     @s.puts "CMD_LIST"

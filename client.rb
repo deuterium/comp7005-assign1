@@ -31,7 +31,7 @@ def help
     puts "#{@p} Commands available: LIST PUT GET EXIT"
 end
 def disconnect
-    @s.puts "CMD_DISCONNECT"
+    @s.puts "CMD_DC"
     puts "#{@p} Disconnecting from server"
 end 
 

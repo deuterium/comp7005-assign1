@@ -15,8 +15,9 @@ end
 def getfile(filename)
     puts "server getfile"
 end
-def listfiles
-    puts "server listfiles"
+def listfiles(c)
+    c.puts `ls`
+    c.puts "CMD_END"
 end
 def log(msg)
     puts "log>> " + msg + @t
@@ -25,23 +26,25 @@ end
 server = TCPServer.open(default_port)
 loop {
     Thread.start(server.accept) do |client|
+        sock_domain, remote_port, 
+            remote_hostname, remote_ip = client.peeraddr
         client.puts "#{@p} Welcome! You've connected at #{Time.now}"
         client.puts "#{@p} Please type HELP for commands"
+        log "#{remote_ip} has connected"
         while msg = client.gets.chomp
-            log(msg)
-
-            case msg
-            when "CMD_LIST"
-                client.puts `ls`
-                client.puts "CMD_END"
-            when "CMD_DISCONNECT"
+            log "#{remote_ip} #{msg}"
+            if msg.eql? "CMD_LIST"
+                listfiles client
+            elsif msg.eql? "CMD_DC"
+                puts "breaking"
                 break
-            else 
+            else
                 puts msg + @t
             end
         end
+        log "#{remote_ip} has disconnected"
         client.close
-        puts "client disconnected"
+        
     end
 }
 

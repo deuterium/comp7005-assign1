@@ -33,12 +33,12 @@ loop {
         log "#{remote_ip} has connected"
         while msg = client.gets.chomp
             log "#{remote_ip} #{msg}"
-            if msg.eql? "CMD_LIST"
+            case msg
+            when "CMD_LIST"
                 listfiles client
-            elsif msg.eql? "CMD_DC"
-                puts "breaking"
+            when "CMD_DC"
                 break
-            else
+            else 
                 puts msg + @t
             end
         end

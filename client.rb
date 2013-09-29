@@ -9,29 +9,40 @@ localhost = "127.0.0.1"
 
 require 'socket'
 def sendfile(filename)
+    @s.puts "CMD_PUT"
     puts "sendfile called"
 end
 def getfile(filename)
+    @s.puts "CMD_GET"
     puts "getfile called"
 end
 def listfiles
-    puts "listfiles called"
+    @s.puts "CMD_LIST"
+    msg = ""
+    while line = @s.gets
+        if line.chomp.eql? "CMD_END"
+            break
+        end
+        msg += line 
+    end
+    puts "#{@p} #{msg.tr "\n"," "}"
 end
 def help
-    puts "help called"
+    puts "#{@p} Commands available: LIST PUT GET EXIT"
 end
-def disconnect(srv)
-    srv.puts "&disconnect%"
+def disconnect
+    @s.puts "CMD_DISCONNECT"
     puts "#{@p} Disconnecting from server"
 end 
 
 
 #connect to to server
-s = TCPSocket.open(localhost, default_port)
+@s = TCPSocket.open(localhost, default_port)
 ##needs error handling
 
 #server welcome message
-puts s.gets.chop
+puts @s.gets.chomp
+puts @s.gets.chomp
 
 #prompt for input from client
 while 1
@@ -46,14 +57,14 @@ while 1
     when "help"
         help
     when "exit"
-        disconnect s
+        disconnect
         break
     else 
-        puts "#{p} invalid command"
+        puts "#{@p} invalid command"
     end 
 end
 
-s.close
+@s.close
 
 
 

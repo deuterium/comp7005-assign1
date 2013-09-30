@@ -102,7 +102,12 @@ def disconnect
 end 
 
 #cmd line arguments
+srv = ARGV[0]
+port = ARGV[1]
 
+#if srv.empty? and port.empty?
+#    puts "HI"
+#end
 
 #connect to to server
 @s = TCPSocket.open(localhost, default_port)

@@ -20,10 +20,12 @@ def sendfile(c)
         puts fullpath
         #fd = open "#{fullpath.chomp}","rb"
         File.open "#{fullpath.chomp}","rb" do |file|
-            while chunk = file.read(99999)
-                puts chunk
-                c.puts chunk
-            end
+            #while chunk = file.read(50000)
+            #    puts chunk
+            #    c.puts chunk
+            #end
+            chunk = file.readlines
+            c.puts chunk
         end
 
         #fc = fd.read
@@ -37,7 +39,6 @@ def sendfile(c)
     ensure
         #fd.close    
     end
-    puts "end of send file"
 end
 def listfiles(c)
     c.puts `ls`

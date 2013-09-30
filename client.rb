@@ -15,26 +15,24 @@ end
 def getfile(filename)
     listfiles
     puts "#{@p} What file do you want?"
-    puts "requesting"
     @s.puts "CMD_GET"
     filename = gets
-    puts "sending filename"
     @s.puts filename
-    puts "receiving file"
+    ##
+    ## Probably need an error check if the file exists on the server
+    ## and can be sent
+    ##
     fc = ""
     while 1
         li = @s.gets
-        puts li
         break if li.include? "CMD_EOF"
         fc << li
     end
-    puts "file received"
     path = `pwd`
-    puts "opening file"
     fd = File.open "#{path.chomp}/#{filename.chomp}","wb"
     fd.print fc
     fd.close
-    puts "closing file"
+    puts "#{@p} File received. Enter another command"
     
 end
 def listfiles

@@ -18,16 +18,26 @@ def sendfile(c)
         path = `pwd`
         fullpath = "#{path.chomp}/#{filename.chomp}"
         puts fullpath
-        fd = open "#{fullpath.chomp}","rb"
-        fc = fd.read
-        c.puts fc
+        #fd = open "#{fullpath.chomp}","rb"
+        File.open "#{fullpath.chomp}","rb" do |file|
+            while chunk = file.read(99999)
+                puts chunk
+                c.puts chunk
+            end
+        end
+
+        #fc = fd.read
+        #c.puts fc
+        #sleep 5
+        c.puts "CMD_EOF"
         log "#{@remote_ip} XFER #{filename.chomp}"
     rescue :ENOENT => err
-        #puts "file does not exist"
+        puts "file does not exist"
         #c.puts "CMD_ERR"
     ensure
-        fd.close    
+        #fd.close    
     end
+    puts "end of send file"
 end
 def listfiles(c)
     c.puts `ls`

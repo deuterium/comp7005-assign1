@@ -21,7 +21,13 @@ def getfile(filename)
     puts "sending filename"
     @s.puts filename
     puts "receiving file"
-    fc = @s.gets
+    fc = ""
+    while 1
+        li = @s.gets
+        puts li
+        break if li.include? "CMD_EOF"
+        fc << li
+    end
     puts "file received"
     path = `pwd`
     puts "opening file"

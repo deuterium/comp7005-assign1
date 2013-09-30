@@ -19,15 +19,38 @@ require 'socket'
 #sendfile
 #Opens specified file from directory this program was run in
 #and sends it to the server.
-def sendfile(filename)
-    @s.puts "CMD_PUT"
-    puts "sendfile called"
+def sendfile
+    @s.puts "CMD_PUT" 
+    ls = `ls`
+    puts "#{@p} #{ls.tr "\n"," "}"
+    puts "#{@p} What file do you want to send?"
+    filename = gets
+    @s.puts filename
+    path = `pwd`
+    fullpath = "#{path.chomp}/#{filename.chomp}"
+    begin
+        File.open "#{fullpath.chomp}","rb" do |file|
+            fc = file.readlines
+            @s.puts fc
+        end
+    rescue :ENOENT => err
+        puts "file does not exist"
+        #@s.puts "CMD_ERR"
+    ensure
+    end
+    @s.puts "CMD_EOF"
+    success = @s.gets
+    if success = "CMD_SCS"
+        puts "#{@p} File transfer complete. Enter another command"
+    elsif success = "CMD_ERR"
+        puts "#{@p} File transfer failed. Enter another command"
+    end
 end
 
 #getfile
 #Requests specified file from server, receives it and saves it 
 #in directory this program was run in.
-def getfile(filename)
+def getfile
     listfiles
     puts "#{@p} What file do you want?"
     @s.puts "CMD_GET"
@@ -96,9 +119,9 @@ while 1
     when "list"
         listfiles
     when "put"
-        sendfile "temp"
+        sendfile
     when "get"
-        getfile "temp"
+        getfile
     when "help"
         help
     when "exit"

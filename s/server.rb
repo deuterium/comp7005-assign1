@@ -1,17 +1,30 @@
 #!/usr/bin/ruby
 #Chris Wood - A00741285 - COMP7005 - Assignment 1
-#descriptionnnn
+#Simple FTP server
+#Waits for clients to connect and allows the transfer
+#of files between server and client.
 
 ##### SERVER CODE
+##TODO:
+### error handling for socket api calls
+### logging to a file
+### client/server code refactoring for common code base
 default_port = 7005
-
 @p = "ftp>"
 @t = " >> #{Time.now}"
 
 require 'socket'
-def getfile(filename)
+
+#receivefile
+#Receives file that a client has requested to send to the server
+#and saves it as a file.
+def receivefile(filename)
     puts "server sendfile"
 end
+
+#sendfile
+#Opens specified file from the directory that the sever is running
+#from and sends it to the requesting client.
 def sendfile(c)
     filename = c.gets
     begin 
@@ -27,7 +40,6 @@ def sendfile(c)
             chunk = file.readlines
             c.puts chunk
         end
-
         #fc = fd.read
         #c.puts fc
         #sleep 5
@@ -40,13 +52,22 @@ def sendfile(c)
         #fd.close    
     end
 end
+
+#listfiles
+#Sends directory listing to requesting client.
 def listfiles(c)
     c.puts `ls`
     c.puts "CMD_END"
 end
+
+#log
+#Verbose logging for the server
+#Currently outputs to terminal only
 def log(msg)
     puts "log>> " + msg + @t
 end
+
+##cmdline arguments for another port
 
 server = TCPServer.open(default_port)
 loop {
@@ -70,24 +91,7 @@ loop {
             end
         end
         log "#{@remote_ip} has disconnected"
-        client.close
-        
+        client.close        
     end
 }
-
-
-
-
-#check invocation and proper usage
-#connect
-
-#send
-
-#get
-
-#disconnect
-
-
-#always error check for api calls (socket creation, socket binding, etc)
-
 

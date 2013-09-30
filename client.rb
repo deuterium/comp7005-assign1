@@ -1,17 +1,32 @@
 #!/usr/bin/ruby
 #Chris Wood - A00741285 - COMP7005 - Assignment 1
-#descriptionnnn
+#Simple FTP client
+#Connects to specified server and allows transfer of
+#files between the client and server.
 
 ##### CLIENT CODE
+##TODO: 
+### error handling for socket api calls
+### "get filename" rather than "get" then "filename"
+### above but for "put"
+### fix behavior with filetypes (non- text, mp3, picture)
 default_port = 7005
 localhost = "127.0.0.1"
 @p = "ftp>"
 
 require 'socket'
+
+#sendfile
+#Opens specified file from directory this program was run in
+#and sends it to the server.
 def sendfile(filename)
     @s.puts "CMD_PUT"
     puts "sendfile called"
 end
+
+#getfile
+#Requests specified file from server, receives it and saves it 
+#in directory this program was run in.
 def getfile(filename)
     listfiles
     puts "#{@p} What file do you want?"
@@ -32,9 +47,11 @@ def getfile(filename)
     fd = File.open "#{path.chomp}/#{filename.chomp}","wb"
     fd.print fc
     fd.close
-    puts "#{@p} File received. Enter another command"
-    
+    puts "#{@p} File received. Enter another command"    
 end
+
+#listfiles
+#Requests a file list from the server
 def listfiles
     @s.puts "CMD_LIST"
     msg = ""
@@ -46,20 +63,29 @@ def listfiles
     end
     puts "#{@p} #{msg.tr "\n"," "}"
 end
+
+#help
+#Shows client available commands
 def help
     puts "#{@p} Commands available: LIST PUT GET EXIT"
 end
+
+#disconnect
+#Sends disconnection notice to server, closes down connection
+#on clientside and ends the program.
 def disconnect
     @s.puts "CMD_DC"
     puts "#{@p} Disconnecting from server"
 end 
+
+#cmd line arguments
 
 
 #connect to to server
 @s = TCPSocket.open(localhost, default_port)
 ##needs error handling
 
-#server welcome message
+#server welcome messages
 puts @s.gets.chomp
 puts @s.gets.chomp
 
@@ -84,19 +110,4 @@ while 1
 end
 
 @s.close
-
-
-
-#check invocation and proper usage
-#connect
-
-#send
-
-#get
-
-#disconnect
-
-
-#always error check for api calls (socket creation, socket binding, etc)
-
 

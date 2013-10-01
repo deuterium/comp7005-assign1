@@ -101,7 +101,9 @@ def disconnect
     puts "#{@p} Disconnecting from server"
 end 
 
-#
+#cmdloop
+#Loop to listen for client commands and call functions
+#depending on command.
 def cmdloop
     while 1
         cmd = gets.chomp.strip.downcase

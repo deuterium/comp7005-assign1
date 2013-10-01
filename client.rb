@@ -42,10 +42,12 @@ def sendfile
     end
     @s.puts "CMD_EOF"
     success = @s.gets
-    if success.eql? "CMD_SCS"
-        puts "#{@p} File transfer complete. Enter another command"
-    elsif success.eql? "CMD_ERR"
-        puts "#{@p} File transfer failed. Enter another command"
+    silence_warnings do
+        if success = "CMD_SCS"
+            puts "#{@p} File transfer complete. Enter another command"
+        elsif success = "CMD_ERR"
+            puts "#{@p} File transfer failed. Enter another command"
+        end 
     end
 end
 
@@ -102,6 +104,15 @@ def disconnect
     @s.puts "CMD_DC"
     puts "#{@p} Disconnecting from server"
 end 
+
+#Runs a block of code without warnings
+def silence_warnings(&block)
+    warn_level = $VERBOSE
+    $VERBOSE = nil
+    result = block.call
+    $VERBOSE = warn_level
+    result
+end
 
 #cmdloop
 #Loop to listen for client commands and call functions

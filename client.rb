@@ -40,9 +40,9 @@ def sendfile
     end
     @s.puts "CMD_EOF"
     success = @s.gets
-    if success = "CMD_SCS"
+    if success.eql? "CMD_SCS"
         puts "#{@p} File transfer complete. Enter another command"
-    elsif success = "CMD_ERR"
+    elsif success.eql? "CMD_ERR"
         puts "#{@p} File transfer failed. Enter another command"
     end
 end
@@ -101,41 +101,51 @@ def disconnect
     puts "#{@p} Disconnecting from server"
 end 
 
-#cmd line arguments
-srv = ARGV[0]
-port = ARGV[1]
+#
+def cmdloop
+    while 1
+        cmd = gets.chomp.strip.downcase
+        case cmd
+        when "list"
+            listfiles
+        when "put"
+            sendfile
+        when "get"
+            getfile
+        when "help"
+            help
+        when "exit"
+            disconnect
+            break
+        else 
+            puts "#{@p} invalid command"
+        end 
+    end
+end
 
-#if srv.empty? and port.empty?
-#    puts "HI"
-#end
+#start logic
+#cmd line arguments
+if ARGV.empty? || ARGV.count > 2
+    puts "Proper usage: ./client.rb server_addr server_port"
+    exit
+elsif ARGV.count == 1
+    srv = ARGV[0]
+    port = default_port
+    ARGV.clear
+else 
+    srv = ARGV[0]
+    port = ARGV[1]
+    ARGV.clear
+end
 
 #connect to to server
-@s = TCPSocket.open(localhost, default_port)
+@s = TCPSocket.open(srv.chomp, port)
 ##needs error handling
-
 #server welcome messages
 puts @s.gets.chomp
 puts @s.gets.chomp
 
 #prompt for input from client
-while 1
-    cmd = gets.chomp.strip.downcase
-    case cmd
-    when "list"
-        listfiles
-    when "put"
-        sendfile
-    when "get"
-        getfile
-    when "help"
-        help
-    when "exit"
-        disconnect
-        break
-    else 
-        puts "#{@p} invalid command"
-    end 
-end
+cmdloop
 
 @s.close
-

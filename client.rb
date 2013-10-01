@@ -10,6 +10,7 @@
 ### "get filename" rather than "get" then "filename"
 ### above but for "put"
 ### fix behavior with filetypes (non- text, mp3, picture)
+### pattern check for IP and port for ARGV
 default_port = 7005
 localhost = "127.0.0.1"
 @p = "ftp>"
@@ -128,7 +129,7 @@ end
 #start logic
 #cmd line arguments
 if ARGV.empty? || ARGV.count > 2
-    puts "Proper usage: ./client.rb server_addr server_port"
+    puts "Proper usage: ./client.rb server_addr [server_port]"
     exit
 elsif ARGV.count == 1
     srv = ARGV[0]

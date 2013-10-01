@@ -9,6 +9,8 @@
 ### error handling for socket api calls
 ### logging to a file
 ### client/server code refactoring for common code base
+### error handling if file does not exist
+### pattern check for IP and port for ARGV
 default_port = 7005
 @p = "ftp>"
 @t = " >> #{Time.now}"
@@ -79,9 +81,20 @@ def log(msg)
     puts "log>> " + msg + @t
 end
 
-##cmdline arguments for another port
 
-server = TCPServer.open(default_port)
+#start logic
+##cmdline arguments for another port
+if ARGV.count > 1
+    puts "Proper usage: ./server [listening_port]"
+    exit
+elsif ARGV.empty?
+    port = default_port
+else
+    port = ARGV[0]
+    ARGV.clear
+end
+
+server = TCPServer.open(port)
 loop {
     Thread.start(server.accept) do |client|
         sock_domain, remote_port, 

@@ -11,6 +11,7 @@
 ### client/server code refactoring for common code base
 ### error handling if file does not exist
 ### pattern check for IP and port for ARGV
+### add windows support
 default_port = 7005
 @p = "ftp>"
 @t = " >> #{Time.now}"

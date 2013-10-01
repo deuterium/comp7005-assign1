@@ -11,6 +11,7 @@
 ### above but for "put"
 ### fix behavior with filetypes (non- text, mp3, picture)
 ### pattern check for IP and port for ARGV
+### add windows support
 default_port = 7005
 localhost = "127.0.0.1"
 @p = "ftp>"
